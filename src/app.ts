@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+dotenv.config()
+dotenv.config({ path: `.env.local`, override: true })
+
 import { join } from 'path';
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import { FastifyPluginAsync, FastifyServerOptions } from 'fastify';
@@ -30,7 +34,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
       schemes: ["http", "https"],
       consumes: ["application/json"],
       produces: ["application/json"],
-      tags: [{ name: "Users", description: "Default" }],
+      tags: [{ name: "Users", description: "Default" }, { name: "Root", description: "Default" }],
     },
   };
 
@@ -42,12 +46,13 @@ const app: FastifyPluginAsync<AppOptions> = async (
   await fastify.register(swagger, swaggerOptions)
   await fastify.register(swaggerUi, swaggerUiOptions)
 
-  const username = 'tommasovecchiattini'
-  const password = 'wLiAiGDTiUrqgcwz'
+  const username = process.env.MONGO_USER
+  const password = process.env.MONGO_PASSWORD
+  const url = 'cluster0.deos3n2.mongodb.net'
   const DbInstance = DbInit({
     dbName: 'ecommerce',
     env: 'local',
-    url: `mongodb+srv://${username}:${password}@cluster0.deos3n2.mongodb.net/`
+    url: `mongodb+srv://${username}:${password}@${url}/`
   })
   DbInstance.connect()
 

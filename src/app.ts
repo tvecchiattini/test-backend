@@ -34,7 +34,12 @@ const app: FastifyPluginAsync<AppOptions> = async (
       schemes: ["http", "https"],
       consumes: ["application/json"],
       produces: ["application/json"],
-      tags: [{ name: "Users", description: "Default" }, { name: "Root", description: "Default" }],
+      tags: [
+        { name: "Users", description: "Default" },
+        { name: "Brands", description: "Default" },
+        { name: "Products", description: "Default" },
+        { name: "Root", description: "Default" }
+      ],
     },
   };
 

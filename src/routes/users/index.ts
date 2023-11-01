@@ -23,11 +23,12 @@ const example: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       tags: ["Users"],
       body: TUser,
       response: {
-        200: TUser
+        201: TUser
       }
     }
   }, async function (request, reply) {
     const newUser = await UsersController.create(request.body)
+    reply.statusCode = 201
     return newUser
   },)
 }

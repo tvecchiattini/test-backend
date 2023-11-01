@@ -14,7 +14,9 @@ export const create = async (data: Omit<User, '_id'>): Promise<User> => {
         throw new Error('Error')
     }
 
-    return { _id: result.insertedId.toString(), ...data }
+    const newUser = { _id: result.insertedId.toString(), ...data } as User
+
+    return newUser
 }
 
 export const get = async () => {
@@ -23,9 +25,9 @@ export const get = async () => {
     } = MongoService.instance()
 
     const result = await db
-        .collection('users')
+        .collection<User>('users')
         .find()
-        .toArray()
+        .toArray() as User[]
 
     return result
 }

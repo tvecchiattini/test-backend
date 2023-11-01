@@ -55,12 +55,14 @@ const app: FastifyPluginAsync<AppOptions> = async (
 
   const username = process.env.MONGO_USER
   const password = process.env.MONGO_PASSWORD
-  const url = 'cluster0.deos3n2.mongodb.net'
+  const url = `mongodb+srv://${username}:${password}z@cluster0.deos3n2.mongodb.net/`
+
   const DbInstance = DbInit({
     dbName: 'ecommerce',
     env: 'local',
-    url: `mongodb+srv://${username}:${password}@${url}/`
+    url
   })
+
   DbInstance.connect()
 
 

@@ -20,7 +20,7 @@ export const get = async ({ code }: { code: string }) => {
 
     const result = await db
         .collection<Product>('products')
-        .find({ 'brand.code': code })
+        .find({ 'brand.brand': code })
         .toArray() as Product[]
 
     return result

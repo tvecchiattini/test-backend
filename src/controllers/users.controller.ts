@@ -39,7 +39,7 @@ export const find = async (id: string) => {
     } = MongoService.instance()
 
     const result = await db
-        .collection('users')
+        .collection('userd')
         .findOne({ _id: new ObjectId(id) }) as User | null
 
     return result

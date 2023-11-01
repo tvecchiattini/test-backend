@@ -1,3 +1,4 @@
+import { Brand } from '../models/brand'
 import MongoService from '../modules/mongo'
 
 export const get = async () => {
@@ -6,9 +7,9 @@ export const get = async () => {
     } = MongoService.instance()
 
     const result = await db
-        .collection('brands')
+        .collection<Brand>('brands')
         .find()
-        .toArray()
+        .toArray() as Brand[]
 
     return result
 }

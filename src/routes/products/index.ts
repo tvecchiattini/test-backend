@@ -34,13 +34,14 @@ const example: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       tags: ["Products"],
       params: TParams,
       response: {
-        200: TProduct
+        200: TProduct,
+        404: { $ref: 'HttpError' }
       }
     }
   }, async function (request, reply) {
     const product = await ProductsController.find(request.params.upc)
     if (!product) {
-      reply.code(404).send()
+      return reply.notFound()
     }
     return product
   })

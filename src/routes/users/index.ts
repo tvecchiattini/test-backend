@@ -1,7 +1,11 @@
 import { FastifyPluginAsync } from "fastify"
 import * as UsersController from '../../controllers/users.controller'
 import { TUser, User } from "../../models/user"
-import { Type } from "@sinclair/typebox"
+import { Static, Type } from "@sinclair/typebox"
+
+const TParams = Type.Object({
+  id: Type.String(),
+})
 
 const example: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get('/', {
@@ -14,6 +18,25 @@ const example: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   }, async function (request, reply) {
     const users = await UsersController.get()
     return users
+  })
+
+  fastify.get<{
+    Params: Static<typeof TParams>
+  }>('/:id', {
+    schema: {
+      tags: ["Users"],
+      params: TParams,
+      response: {
+        200: TUser,
+        404: { $ref: 'HttpError' }
+      }
+    }
+  }, async function (request, reply) {
+    const user = await UsersController.find(request.params.id)
+    if (!user) {
+      return reply.notFound()
+    }
+    return user
   })
 
   fastify.post<{

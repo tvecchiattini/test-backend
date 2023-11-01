@@ -9,6 +9,7 @@ import { DbInit } from './modules/mongo';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
+import cors from '@fastify/cors'
 
 export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPluginOptions> {
 
@@ -48,6 +49,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
     exposeRoute: true,
   };
 
+  await fastify.register(cors)
   await fastify.register(swagger, swaggerOptions)
   await fastify.register(swaggerUi, swaggerUiOptions)
 
@@ -64,6 +66,11 @@ const app: FastifyPluginAsync<AppOptions> = async (
 
   void fastify.register(AutoLoad, {
     dir: join(__dirname, 'routes'),
+    options: opts
+  })
+
+  void fastify.register(AutoLoad, {
+    dir: join(__dirname, 'plugins'),
     options: opts
   })
 };
